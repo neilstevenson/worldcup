@@ -1,0 +1,16 @@
+
+${Ansi.GREEN}
+W       W                L         D       CCC
+W       W                L         D      C   c
+W       W                L         D      C
+W       W   OOO    RRRR  L      DDDD      C      U   U  PPPP
+W       W  O   O  R      L     D   D      C      U   U  P   P
+W  WWW  W  O   O  R      L     D   D      C      U   U  P   P
+W W   W W  O   O  R      L     D   D      C   C  U   U  P   P
+ W     W    OOO   R      LLLL   DDDD       CCC    UUU   PPPP
+                                                        P
+                                                        P
+                                                        P
+
+${Ansi.RED} HashTag '${my.hashtag}'
+                 
