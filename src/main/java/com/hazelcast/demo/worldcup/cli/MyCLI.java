@@ -13,7 +13,9 @@ import org.springframework.shell.standard.ShellMethod;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import com.hazelcast.demo.worldcup.jet.TwtiterPipeline;
+import com.hazelcast.demo.worldcup.MyConfigurationProperties;
+import com.hazelcast.demo.worldcup.Util;
+import com.hazelcast.demo.worldcup.jet.TwitterPipeline;
 import com.hazelcast.jet.Jet;
 import com.hazelcast.jet.JetInstance;
 import com.hazelcast.jet.Job;
@@ -36,7 +38,9 @@ public class MyCLI {
 	@Autowired
 	public JetInstance jetInstance;
 	@Autowired
-	public TwtiterPipeline twitterPipeline;
+	public MyConfigurationProperties myConfigurationProperties;
+	@Autowired
+	public TwitterPipeline twitterPipeline;
 	
 	private Job twitterPipelineJob = null;
 
@@ -45,7 +49,7 @@ public class MyCLI {
 	 * List the jobs in Jet, started, running and completed.
 	 * </p>
 	 */
-	@ShellMethod(key = "JOBS", value = "List all jobs")
+	@ShellMethod(key = "jobs", value = "List all jobs")
 	public void jobs() {
 		AtomicLong count = new AtomicLong();
 
@@ -68,7 +72,7 @@ public class MyCLI {
 	 * List the maps in the IMDG
 	 * </p>
 	 */
-	@ShellMethod(key = "LIST", value = "List IMDG maps")
+	@ShellMethod(key = "list", value = "List IMDG maps")
 	public void list() {
 		AtomicLong count = new AtomicLong();
 		
@@ -108,8 +112,8 @@ public class MyCLI {
 	 * ask Hazelcast Jet to run it.
 	 * </p>
 	 */
-	@ShellMethod(key = "START", value = "Start the Twitter pipeline")
-	public String start() {
+	@ShellMethod(key = "start", value = "Start the Twitter pipeline")
+	public String start() throws Exception {
 		if (this.twitterPipelineJob != null) {
 			return String.format("Job already running, since %s%n", new Date(this.twitterPipelineJob.getSubmissionTime()));
 		}
@@ -117,7 +121,9 @@ public class MyCLI {
 		Pipeline pipeline = this.twitterPipeline.build();
 		
 		JobConfig jobConfig = new JobConfig();
-		jobConfig.setName(this.twitterPipeline.getClass().getSimpleName());
+		String name = this.twitterPipeline.getClass().getSimpleName() + "-'"
+				+ Util.makeHashtag(this.myConfigurationProperties.getHashtag()) + "'";
+		jobConfig.setName(name);
 		
 		this.twitterPipelineJob = this.jetInstance.newJob(pipeline, jobConfig);
 
@@ -130,7 +136,7 @@ public class MyCLI {
 	 * by the {@link #start()} method above unless you add more.
 	 * </p>
 	 */
-	@ShellMethod(key = "STOP", value = "Stop all running jobs")
+	@ShellMethod(key = "stop", value = "Stop all running jobs")
 	public String stop() {
 		if (this.twitterPipelineJob == null) {
 			return String.format("Job is not running%n");

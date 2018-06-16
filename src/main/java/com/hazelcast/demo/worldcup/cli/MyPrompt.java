@@ -8,6 +8,7 @@ import org.springframework.shell.jline.PromptProvider;
 import org.springframework.stereotype.Component;
 
 import com.hazelcast.demo.worldcup.MyConfigurationProperties;
+import com.hazelcast.demo.worldcup.Util;
 
 /**
  * <p>
@@ -27,11 +28,15 @@ public class MyPrompt implements PromptProvider {
     @Override
     public AttributedString getPrompt() {
     	if (this.prompt == null) {
-    		String ps1 = 
-    				this.springApplicationName +
-    				" '" +
-    				this.myConfigurationProperties.getHashtag() + 
-    				"' $ ";
+    		String ps1 = " $ ";
+    		try {
+    			ps1 = this.springApplicationName +
+				" '" +
+				Util.makeHashtag(this.myConfigurationProperties.getHashtag()) + 
+				"'" + ps1;
+    		} catch (Exception e) {
+    			e.printStackTrace(System.err);
+    		}
     		this.prompt = new AttributedString(ps1,
     				AttributedStyle.DEFAULT.foreground(AttributedStyle.YELLOW)
     				);
