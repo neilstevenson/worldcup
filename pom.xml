@@ -1,0 +1,118 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.3.RELEASE</version>
+	</parent>
+
+	<groupId>com.hazelcast.demo.worldcup</groupId>
+	<artifactId>worldcup</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<!-- Some games...
+		14th June - Russia v Saudi Arabia
+		15th June - Portugal v Spain
+		16th June - Argentina v Iceland
+		18th June - Tunisia v England
+		19th June - Russia v Egpyt 
+		20th June - Uruguay v Saudi Arabia
+		25th June - Uruguay v Russia 
+		26th June - Denmark v France
+		27th June - Switzerland v Costa Rica
+		28th June - England v Belgium 
+		-->
+		<my.hashtag>#ARGvICE</my.hashtag>
+
+		<!-- New features of 0.7 not really needed for this demo -->
+		<hazelcast-jet.version>0.6.1</hazelcast-jet.version>
+		<hazelcast-jet.version>0.7-SNAPSHOT</hazelcast-jet.version>
+
+		<java.version>8</java.version>
+		<spring-shell.version>2.0.1.RELEASE</spring-shell.version>
+		<hbc-twitter4j.version>2.2.0</hbc-twitter4j.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+		<!-- Jet includes Hazelcast IMDG -->
+		<dependency>
+			<groupId>com.hazelcast.jet</groupId>
+			<artifactId>hazelcast-jet</artifactId>
+			<version>${hazelcast-jet.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.twitter</groupId>
+			<artifactId>hbc-core</artifactId>
+			<version>${hbc-twitter4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.shell</groupId>
+			<artifactId>spring-shell-starter</artifactId>
+			<version>${spring-shell.version}</version>
+		</dependency>
+		
+		<!-- scope==test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+	</dependencies>
+
+	<build>
+		<!-- Replace hashtag in application.yml -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!-- REMOVE -->
+	<repositories>
+		<repository>
+			<id>Hazelcast Public Snapshot Repository</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<!-- Minutes, 720  = half a day -->
+				<updatePolicy>interval:720</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
+</project>
