@@ -26,13 +26,14 @@
 		27th June - Switzerland v Costa Rica
 		28th June - England v Belgium 
 		-->
-		<my.hashtag>#ARGvICE</my.hashtag>
+		<my.hashtag>#GERMEX</my.hashtag>
 
 		<!-- New features of 0.7 not really needed for this demo -->
 		<hazelcast-jet.version>0.6.1</hazelcast-jet.version>
 		<hazelcast-jet.version>0.7-SNAPSHOT</hazelcast-jet.version>
 
 		<java.version>8</java.version>
+		<json.version>20180130</json.version>
 		<spring-shell.version>2.0.1.RELEASE</spring-shell.version>
 		<hbc-twitter4j.version>2.2.0</hbc-twitter4j.version>
 	</properties>
@@ -54,6 +55,12 @@
 			<groupId>com.twitter</groupId>
 			<artifactId>hbc-core</artifactId>
 			<version>${hbc-twitter4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>${json.version}</version>
 		</dependency>
 
 		<dependency>
