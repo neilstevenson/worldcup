@@ -61,7 +61,7 @@ public class ApplicationConstants {
 		{ "18th June", "Tunisia v England", "#TUNENG" },
 		{ "19th June", "Russia v Egypt", "#RUSEGY" },
 		{ "20th June", "Uruguay v Saudi Arabia", "#URUKSA" },
-		{ "20th June", "Iran v Spain", "#IRAPSA" },
+		{ "20th June", "Iran v Spain", "#IRNSPA" },
 		{ "21st June", "Denmark v Australia", "#DENAUS" },
 		{ "22nd June", "Brasil v Costa Rica", "#BRACRC" },
 		{ "25th June", "Uruguay v Russia", "#URURUS" },
