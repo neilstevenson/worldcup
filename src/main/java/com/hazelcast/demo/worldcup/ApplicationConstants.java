@@ -8,7 +8,8 @@ package com.hazelcast.demo.worldcup;
 public class ApplicationConstants {
 
 	// Hazelcast
-	public static final String[] IMAP_NAMES = { };
+	public static final String IMAP_NAME_SENTINMENT = "sentiment";
+	public static final String[] IMAP_NAMES = { IMAP_NAME_SENTINMENT };
 	public static final String MULTIMAP_NAME_GAMES = "games";
 	public static final String[] MULTIIMAP_NAMES = { MULTIMAP_NAME_GAMES };
 

@@ -82,35 +82,6 @@ public class MyCLI {
 		AtomicLong countIMaps = new AtomicLong();
 		AtomicLong countMultiMaps = new AtomicLong();
 
-		this.hazelcastInstance.getDistributedObjects().stream()
-        .filter(distributedObject -> distributedObject instanceof IMap)
-        .filter(distributedObject -> !distributedObject.getName().startsWith(Jet.INTERNAL_JET_OBJECTS_PREFIX))
-        .map(distributedObject -> distributedObject.getName()).collect(Collectors.toCollection(TreeSet::new))
-        .stream()
-        .forEach(name -> {
-        	countIMaps.incrementAndGet();
-            IMap<?, ?> iMap = this.hazelcastInstance.getMap(name);
-            
-            System.out.println("");
-            System.out.printf("IMap: '%s'%n", name);
-            
-            // Sort if possible
-            Set<?> keys = iMap.keySet();
-            if (!keys.isEmpty() && keys.iterator().next() instanceof Comparable) {
-                keys = new TreeSet<>(keys);
-            }
-
-            keys.stream().forEach(key -> {
-                System.out.printf("    -> '%s' -> %s%n", key, iMap.get(key));
-            });
-
-            System.out.printf("[%d entr%s]%n", iMap.size(), (iMap.size() == 1 ? "y" : "ies"));
-
-        });
-
-		System.out.println("");
-		System.out.printf("[%d IMap%s]%n", countIMaps.get(), (countIMaps.get() == 1 ? "" : "s"));
-
 
 		this.hazelcastInstance.getDistributedObjects().stream()
         .filter(distributedObject -> distributedObject instanceof MultiMap)
@@ -145,6 +116,36 @@ public class MyCLI {
 
 		System.out.println("");
 		System.out.printf("[%d MultiMap%s]%n", countMultiMaps.get(), (countMultiMaps.get() == 1 ? "" : "s"));
+
+
+		this.hazelcastInstance.getDistributedObjects().stream()
+        .filter(distributedObject -> distributedObject instanceof IMap)
+        .filter(distributedObject -> !distributedObject.getName().startsWith(Jet.INTERNAL_JET_OBJECTS_PREFIX))
+        .map(distributedObject -> distributedObject.getName()).collect(Collectors.toCollection(TreeSet::new))
+        .stream()
+        .forEach(name -> {
+        	countIMaps.incrementAndGet();
+            IMap<?, ?> iMap = this.hazelcastInstance.getMap(name);
+            
+            System.out.println("");
+            System.out.printf("IMap: '%s'%n", name);
+            
+            // Sort if possible
+            Set<?> keys = iMap.keySet();
+            if (!keys.isEmpty() && keys.iterator().next() instanceof Comparable) {
+                keys = new TreeSet<>(keys);
+            }
+
+            keys.stream().forEach(key -> {
+                System.out.printf("    -> '%s' -> %s%n", key, iMap.get(key));
+            });
+
+            System.out.printf("[%d entr%s]%n", iMap.size(), (iMap.size() == 1 ? "y" : "ies"));
+
+        });
+
+		System.out.println("");
+		System.out.printf("[%d IMap%s]%n", countIMaps.get(), (countIMaps.get() == 1 ? "" : "s"));
 	}
 
 	/**

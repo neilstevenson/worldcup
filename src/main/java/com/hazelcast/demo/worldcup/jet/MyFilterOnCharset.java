@@ -15,7 +15,11 @@ public class MyFilterOnCharset {
 		= StandardCharsets.US_ASCII.newEncoder();
 	
     public static boolean westernChars(String s) {
-    	return charsetEncoder.canEncode(s);
+    	try {
+        	return charsetEncoder.canEncode(s);
+    	} catch (Exception e) {
+    		return false;
+    	}
     }
 
 }
