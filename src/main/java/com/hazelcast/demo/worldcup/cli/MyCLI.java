@@ -1,5 +1,6 @@
 package com.hazelcast.demo.worldcup.cli;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Set;
@@ -10,9 +11,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellOption;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
+import com.hazelcast.core.MultiMap;
+import com.hazelcast.demo.worldcup.ApplicationConstants;
 import com.hazelcast.demo.worldcup.MyConfigurationProperties;
 import com.hazelcast.demo.worldcup.Util;
 import com.hazelcast.demo.worldcup.jet.TwitterPipeline;
@@ -72,17 +76,19 @@ public class MyCLI {
 	 * List the maps in the IMDG
 	 * </p>
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@ShellMethod(key = "list", value = "List IMDG maps")
 	public void list() {
-		AtomicLong count = new AtomicLong();
-		
+		AtomicLong countIMaps = new AtomicLong();
+		AtomicLong countMultiMaps = new AtomicLong();
+
 		this.hazelcastInstance.getDistributedObjects().stream()
         .filter(distributedObject -> distributedObject instanceof IMap)
         .filter(distributedObject -> !distributedObject.getName().startsWith(Jet.INTERNAL_JET_OBJECTS_PREFIX))
         .map(distributedObject -> distributedObject.getName()).collect(Collectors.toCollection(TreeSet::new))
         .stream()
         .forEach(name -> {
-        	count.incrementAndGet();
+        	countIMaps.incrementAndGet();
             IMap<?, ?> iMap = this.hazelcastInstance.getMap(name);
             
             System.out.println("");
@@ -103,7 +109,42 @@ public class MyCLI {
         });
 
 		System.out.println("");
-		System.out.printf("[%d IMap%s]%n", count.get(), (count.get() == 1 ? "" : "s"));
+		System.out.printf("[%d IMap%s]%n", countIMaps.get(), (countIMaps.get() == 1 ? "" : "s"));
+
+
+		this.hazelcastInstance.getDistributedObjects().stream()
+        .filter(distributedObject -> distributedObject instanceof MultiMap)
+        .map(distributedObject -> distributedObject.getName()).collect(Collectors.toCollection(TreeSet::new))
+        .stream()
+        .forEach(name -> {
+        	countMultiMaps.incrementAndGet();
+            MultiMap multiMap = this.hazelcastInstance.getMultiMap(name);
+            
+            System.out.println("");
+            System.out.printf("IMap: '%s'%n", name);
+            
+            // Sort if possible
+			Set<?> keys = multiMap.keySet();
+            if (!keys.isEmpty() && keys.iterator().next() instanceof Comparable) {
+                keys = new TreeSet<>(keys);
+            }
+
+            keys.stream().forEach(key -> {
+                System.out.printf("    -> '%s'%n", key);
+                
+            	Collection<?> values = (Collection<?>) multiMap.get(key);
+            	if (values.size() > 0 && values.iterator().next() instanceof Comparable) {
+            		values = new TreeSet<>(values);
+            	}
+            	values.stream().forEach(game -> System.out.printf("    ->      -> %s%n", game));
+            });
+
+            System.out.printf("[%d entr%s]%n", multiMap.size(), (multiMap.size() == 1 ? "y" : "ies"));
+
+        });
+
+		System.out.println("");
+		System.out.printf("[%d MultiMap%s]%n", countMultiMaps.get(), (countMultiMaps.get() == 1 ? "" : "s"));
 	}
 
 	/**
@@ -111,18 +152,30 @@ public class MyCLI {
 	 * Create a processing pipeline, a chain of methods, and
 	 * ask Hazelcast Jet to run it.
 	 * </p>
+	 * @param tag String to search Twitter for
+	 * @param validate Check or not if known hashtag (in MultiMap)
 	 */
 	@ShellMethod(key = "start", value = "Start the Twitter pipeline")
-	public String start() throws Exception {
+	public String start(
+			@ShellOption String tag,
+			@ShellOption(defaultValue="true") String validate
+			) throws Exception {
 		if (this.twitterPipelineJob != null) {
 			return String.format("Job already running, since %s%n", new Date(this.twitterPipelineJob.getSubmissionTime()));
 		}
 		
-		Pipeline pipeline = this.twitterPipeline.build();
+		String hashtag = Util.makeHashtag(tag);
+		if (validate.equalsIgnoreCase("true")) {
+			if (!Util.validateHashtag(this.hazelcastInstance.getMultiMap(ApplicationConstants.MULTIMAP_NAME_GAMES), hashtag)) {
+				return String.format("Hashtag '%s' from original '%s' not known. Use \"--validate false\" ?%n", hashtag, tag);
+			}
+		}
+		
+		Pipeline pipeline = this.twitterPipeline.build(hashtag);
 		
 		JobConfig jobConfig = new JobConfig();
-		String name = this.twitterPipeline.getClass().getSimpleName() + "-'"
-				+ Util.makeHashtag(this.myConfigurationProperties.getHashtag()) + "'";
+		String name = this.twitterPipeline.getClass().getSimpleName() + "-'" + hashtag + "'";
+
 		jobConfig.setName(name);
 		
 		this.twitterPipelineJob = this.jetInstance.newJob(pipeline, jobConfig);

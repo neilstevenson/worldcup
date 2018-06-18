@@ -1,4 +1,5 @@
 
+${Ansi.RED} =============================================================
 ${Ansi.GREEN}
 W       W                L         D       CCC
 W       W                L         D      C   c
@@ -11,6 +12,5 @@ W W   W W  O   O  R      L     D   D      C   C  U   U  P   P
                                                         P
                                                         P
                                                         P
-
-${Ansi.RED} HashTag '${my.hashtag}'
+${Ansi.RED} =============================================================
                  

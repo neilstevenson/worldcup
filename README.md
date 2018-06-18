@@ -14,7 +14,7 @@ Chempionat Mira
 
 ## Instructions
 
-There are three main steps to build and run
+There are two main steps to build and run
 
 ### Twitter connection properties
 
@@ -37,14 +37,6 @@ my.token=
 my.tokenSecret=
 ```
 
-### Hashtag
-In the `pom.xml` file, the property "`my.hashtag`" is defined.
-
-This is the hashtag to search Twiiter for. For example, try "_ARGvICE_" for tweets about the
-Argentina v Iceland game (on 16th June, result was 1-1).
-
-The Maven build process will inject this property into the `application.yml` file, and then Spring loads substituted value when the JVM starts.
-
 ### Command line
 
 To start the application from the command line, you need to make sure you use both the `application.yml` file updated by Maven, and the `application.properties` file with your Twitter properties.
@@ -52,10 +44,8 @@ To start the application from the command line, you need to make sure you use bo
 This command will do it:
 
 ```
-java -jar target/worldcup-0.0.1-SNAPSHOT.jar --spring.config.location=classpath:application.yml,file:${HOME}/Documents/application.properties
+java -jar target/worldcup-0.0.1-SNAPSHOT.jar --spring.config.location=file:${HOME}/Documents/application.properties
 ```
 
-The `--spring.config.location` section indicates to use the `application.yml` file from the classpath (ie. inside the *Jar* file) and the `application.properties` from the file-system.
-
-This could be made more elegant, feel free to amend to suit you.
+The `--spring.config.location` section indicates to use the `application.properties` file from the file-system. Obviously you need to set this appropriately!
 

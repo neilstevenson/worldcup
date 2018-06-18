@@ -1,5 +1,9 @@
 package com.hazelcast.demo.worldcup;
 
+import java.util.Collection;
+
+import com.hazelcast.core.MultiMap;
+
 /**
  * <p>
  * Helpful functions needed in more than one place.
@@ -28,5 +32,28 @@ public class Util {
 			}
 		}
 		return '#' + s;
+	}
+
+	/**
+	 * <p>
+	 * Confirm or deny if a supplied hashtag is in the multimap of games.
+	 * </p>
+	 * 
+	 * @param gamesMap The MultiMap holding game information 
+	 * @param hashtag What to look for
+	 * @return True if found
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static boolean validateHashtag(MultiMap gamesMap, String hashtag) {
+		
+		Collection<Game> allGames = gamesMap.values();
+		
+		for (Game game : allGames) {
+			if (game.getHashtag().equals(hashtag)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

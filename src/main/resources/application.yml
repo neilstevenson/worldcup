@@ -1,6 +1,0 @@
-# Maven will replace the property from the pom.xml
-my.hashtag: '@my.hashtag@'
-
-spring:
-  application:
-    name: WorldCup

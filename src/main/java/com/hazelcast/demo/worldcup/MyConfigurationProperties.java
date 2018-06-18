@@ -10,13 +10,8 @@ import lombok.Data;
 
 /**
  * <p>
- * Properties to load from the "{@code application.yml}" file, the
- * hashtag to search for on Twitter and the four paramters to make
- * a client connection to Twitter.
- * </p>
- * <p>The Maven build process will replace the placeholder in the
- * "{@code application.yml}" with the property defined in the 
- * "{@code pom.xml}". This is a little better than hard-coding it.
+ * Properties to load from the "{@code application.properties}" file, the
+ * four parameters to make a client connection to Twitter.
  * </p>
  */
 @Configuration
@@ -29,9 +24,6 @@ public class MyConfigurationProperties {
 	public static final String CONSUMER_SECRET = "consumerSecret";
 	public static final String TOKEN = "token";
 	public static final String TOKEN_SECRET = "tokenSecret";
-
-	@NotNull
-	private String hashtag;
 
 	@NotNull
 	private String consumerKey;
