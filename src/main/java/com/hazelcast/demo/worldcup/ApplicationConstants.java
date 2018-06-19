@@ -13,41 +13,6 @@ public class ApplicationConstants {
 	public static final String MULTIMAP_NAME_GAMES = "games";
 	public static final String[] MULTIIMAP_NAMES = { MULTIMAP_NAME_GAMES };
 
-	/* "Recommended" country trios:
-	 * 
-	 * AUS - Australia
-	 * BEL - Belgium
-	 * BRA - Brazil
-	 * COL - Colombia
-	 * CRC - Costa Rica
-	 * CRO - Croatia
-	 * DEN - Denmark
-	 * EGY - Egypt
-	 * ENG - England
-	 * ESP - Spain
-	 * FRA - France
-	 * GER - Germany
-	 * IRN - Iran
-	 * ISL - Iceland
-	 * JPN - Japan
-	 * KOR - South Korea
-	 * KSA - Saudi Arabia
-	 * MEX - Mexico
-	 * MAR - Morocco
-	 * NGA - Nigeria
-	 * PAN - Panama
-	 * PER - Peru
-	 * POL - Poland
-	 * POR - Portugal
-	 * RUS - Russia
-	 * SEN - Senegal
-	 * SRB - Serbia
-	 * SUI - Switzerland
-	 * SWE - Sweden
-	 * TUN - Tunisia
-	 * URU - Uruguay
-	 */
-	
 	// Some of the games
 	public static final String[][] GAMES = new String[][] {
 		{ "14th June", "The World Cup", "#WORLDCUP" },
@@ -70,4 +35,41 @@ public class ApplicationConstants {
 		{ "27th June", "Switzerland v Costa Rica", "#SWICRC" },
 		{ "28th June", "England v Belgium", "#ENGBEL" },
 	};
+	
+	// "Recommended" country trios hashtags
+	public static final String[][] TEAMS = new String[][] {
+		{ "Argentina", "ARG" },
+		{ "Australia", "AUS" },
+		{ "Belgium", "BEL" },
+		{ "Brazil", "BRA" },
+		{ "Colombia", "COL" },
+		{ "Costa Rica", "CRC" },
+		{ "Croatia", "CRO" },
+		{ "Denmark", "DEN" },
+		{ "Egypt", "EGY" },
+		{ "England", "ENG" },
+		{ "Spain", "SPA" },
+		{ "France", "FRA" },
+		{ "Germany", "GER" },
+		{ "Iran", "IRN" },
+		{ "Iceland", "ISL" },
+		{ "Japan", "JAP" },
+		{ "South Korea", "KOR" },
+		{ "Saudi Arabia", "KSA" },
+		{ "Mexico", "MEX" },
+		{ "Morocco", "MAR" },
+		{ "Nigeria", "NGA" },
+		{ "Panama", "PAN" },
+		{ "Peru", "PER" },
+		{ "Poland", "POL" },
+		{ "Portugal", "POR" },
+		{ "Russia", "RUS" },
+		{ "Senegal", "SEN" },
+		{ "Serbia", "SRB" },
+		{ "Switzerland", "SUI" },
+		{ "Sweden", "SWD" },
+		{ "Tunisia", "TUN" },
+		{ "Uruguay", "URU" },
+	};
+
 }
