@@ -48,7 +48,32 @@ import com.hazelcast.map.EntryProcessor;
  * </p>
  * </li>
  * <li><p><b>Step 7</b></p>
- * TODO
+ * <p>Step 7 uses the "{@code DistributedFunctions.entryKey()}" method.
+ * </p>
+ * <p>This is for group, the output from Step 6 are grouped by the key of
+ * Step 6's output. In other words, Step 6 is emitting {@code Map.Entry}
+ * values. These are distributed based on the key -- and the key here is
+ * the name of a team "{@code DEN}" for Denmark for example.
+ * </p>
+ * <p>
+ * This means one instance of a Jet job running in one JVM may send its
+ * output to another instance of this job, potentially running in a
+ * different JVM. All entries for key "{@code DEN}" for Denmark are
+ * routed to a single instance of this job. 
+ * </p>
+ * <p>
+ * A Jet job will typically run as many instances as CPUs can support
+ * per JVM, and there are typically multiple JVMs in the cluster.
+ * </p>
+ * <p>So what this means in effect is a single instance of the
+ * entry processor class looks after the collation of sentiment
+ * for a team.
+ * </p>
+ * <p>As this routing means moving data from one JVM to another,
+ * across a network, it is best to do this as far down the
+ * pipeline as possible so that data volumes are reduced. Here
+ * it is the last stage, can't do better than that.
+ * </p>
  * </li>
  * </ol>
  */
