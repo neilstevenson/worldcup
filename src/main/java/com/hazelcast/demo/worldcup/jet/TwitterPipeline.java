@@ -76,6 +76,28 @@ import com.hazelcast.map.EntryProcessor;
  * </p>
  * </li>
  * </ol>
+ * </br>
+ * <p><b>IMprovements possible</b>
+ * </p>
+ * <p>There are many, here are some ideas
+ * </p>
+ * <ol>
+ * <li>
+ * <p><b>Geographic Exclusion</b></p>
+ * <p>
+ * If enabled by the user, some tweets can have their geographic position.
+ * A tweet originitating in Brasil about "@{code BRA}" (Brasil) is probably
+ * a home fan and they are inclined to be biassed about their team.
+ * </p>
+ * <p>
+ * We could simply exclude these. Or we could dilute the rating for positive
+ * comments since we expect them to support their side, yet note negative
+ * comments since they are less likely to be lying if they are saying their
+ * side is poor.
+ * </p>
+ * </li>
+ * 
+ * </ol>
  */
 @Component
 public class TwitterPipeline {

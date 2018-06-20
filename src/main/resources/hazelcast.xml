@@ -23,6 +23,14 @@
 			</tcp-ip>
 		</join>
 	</network>
+
+	<!-- For interoperable classes for non-Java clients, such as Sentiment.class -->
+    <serialization>
+        <data-serializable-factories>
+            <data-serializable-factory factory-id="1">com.hazelcast.demo.worldcup.MyDataSerializableFactory</data-serializable-factory>
+        </data-serializable-factories>
+    </serialization>
+
 </hazelcast>
         
        

@@ -12,6 +12,10 @@ public class ApplicationConstants {
 	public static final String[] IMAP_NAMES = { IMAP_NAME_SENTINMENT };
 	public static final String MULTIMAP_NAME_GAMES = "games";
 	public static final String[] MULTIIMAP_NAMES = { MULTIMAP_NAME_GAMES };
+	
+	// Interoprable Hazelcast, with non-Java clients
+    public static final int MY_DATA_SERIALIZABLE_FACTORY = 1;
+    public static final int CLASS_SENTIMENT = 1000;
 
 	// Some of the games
 	public static final String[][] GAMES = new String[][] {
