@@ -86,8 +86,8 @@ import com.hazelcast.map.EntryProcessor;
  * <p><b>Geographic Exclusion</b></p>
  * <p>
  * If enabled by the user, some tweets can have their geographic position.
- * A tweet originitating in Brasil about "@{code BRA}" (Brasil) is probably
- * a home fan and they are inclined to be biassed about their team.
+ * A tweet originating in Brasil about "@{code BRA}" (Brasil) is probably
+ * a home fan and they are inclined to be biased about their team.
  * </p>
  * <p>
  * We could simply exclude these. Or we could dilute the rating for positive
@@ -96,7 +96,27 @@ import com.hazelcast.map.EntryProcessor;
  * side is poor.
  * </p>
  * </li>
- * 
+ * <li>
+ * <p><b>Western charactors</b></p>
+ * <p>
+ * In {@link com.hazelcast.demo.worldcup.jet.MyFilterOnCharset MyFilterOnCharset} tweets that aren't in
+ * ASCII are ignored. This is obviously wrong for tweets about countries where their natural language
+ * is expressed in different characters. Cyrillic for Russia, and so on.
+ * </p>
+ * </li>
+ * <li>
+ * <p><b>Words list</b></p>
+ * <p>
+ * The way words are scanned for in {@link com.hazelcast.demo.worldcup.jet.MyDetermineSentiment MyDetermineSentiment}
+ * has no context. If we see "{@code good}" in a string such as "{@code the team's performance is not good}" then
+ * the word "<i>good</i>" gives the derivation of a positive sentiment, but the prefix of "<i>not</i>" should make
+ * it a negative sentimemnt.
+ * </p>
+ * <p>Looking for "<i>not good</i>" would be a start here. It would mess "<i>not doing good</i>" but would still be
+ * an improvement. Sentiment analysis is all about the big picture, getting it wrong for individual tweets doesn't
+ * matter too much.
+ * </p>
+ * </li>
  * </ol>
  */
 @Component
