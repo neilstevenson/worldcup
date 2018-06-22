@@ -19,8 +19,121 @@ import com.hazelcast.map.EntryProcessor;
  * amount, and store a small amount -- then sentiment expressed in those tweets.
  * </p>
  * <p>
- * TODO
+ * From top to bottom, the pipeline looks like this. 
  * </p>
+ * <pre>
+ *           +--------------+
+ *           | (1)          |
+ *           | Read Twitter |
+ *           |              |
+ *           +--------------+
+ *                  |
+ *                  |
+ *                  |
+ *           +--------------+
+ *           | (2)          |
+ *           | Filter On    |
+ *           | Charset      |
+ *           +--------------+
+ *                  |
+ *                  |
+ *                  |
+ *           +--------------+
+ *           | (3)          |
+ *           | Find Team    |
+ *           | Name         |
+ *           +--------------+
+ *                  |
+ *                  |
+ *                  |
+ *           +--------------+
+ *           | (4)          |
+ *           | Filter On    |
+ *           | Team Name    |
+ *           +--------------+
+ *                  |
+ *                  |
+ *                  |
+ *           +--------------+
+ *           | (5)          |
+ *           | Filter On    |
+ *           | Hashtag      |
+ *           +--------------+
+ *                  |
+ *                  |
+ *                  |
+ *           +--------------+
+ *           | (6)          |
+ *           | Determine    |
+ *           | Sentiment    |
+ *           +--------------+
+ *                  |
+ *                  |
+ *                  |
+ *           +--------------+
+ *           | (7)          |
+ *           | Save Results |
+ *           | To Hazelcast |
+ *           +--------------+
+ * </pre>
+ * <ol>
+ * <li><p>Read Twitter</p>
+ * <p>This is a "<i>source</i>" stage.TODO
+ * </p>
+ * <p>What this means in streaming terminology is this stage is a source of data. It doesn't receive
+ * data from an earlier step in the pipeline, but instead somehow generates output for the next
+ * stage in the pipeline.
+ * </p>
+ * TODO twitter
+ * TODO stream stage not batch stage
+ * </li>
+ * <li><p>Filter On Charset</p>
+ * <p>This is a filtering intermediate stage. Data records come in from the previous stage,
+ * and are immediately passed to the next stage if the filter returns "{@code true}".
+ * </p>
+ * <p>The input is a "{@code java.util.String}" (and therefore so is the output). It
+ * contains the text of a tweet.
+ * </p>
+ * <p>Filter here is on the charset of the string. If everything is ASCII characters the
+ * filter returns "{@code true}" and the data goes to the next stage. In the context of
+ * the World Cup, this will filter out tweets containing Cyrillic characters, symbols
+ * such as emojis and so on. This is not because such tweets are useless, but because
+ * the business logic is simplistic and can't handle them. So the principle being
+ * demonstrated is to eliminate items from the stream as early as possible.
+ * </p>
+ * </li>
+ * <li><p>Find Team Name</p>
+ * <p>This is a mapping intermediate stage.
+ * </p>
+ * <p>Data records come in from the previous stage as "{@code java.util.String}"
+ * and are passed on the next stage as a tuple of two "{@code java.util.String}".
+ * So input in one form is mapped to output in another form.
+ * </p>
+ * TODO key
+ * TODO enrichment
+ * </li>
+ * <li><p>Filter On Team Name</p>
+ * <p>This is a filtering intermediate stage.TODO
+ * </p>
+ * TODO
+ * </li>
+ * <li><p>Filter On Hashtag</p>
+ * <p>This is a filtering intermediate stage.TODO
+ * </p>
+ * TODO
+ * </li>
+ * <li><p>Determine Sentiment</p>
+ * <p>This is a mapping intermediate stage.TODO
+ * </p>
+ * TODO
+ * </li>
+ * <li><p>Save Results To Hazelcast</p>
+ * <p>This is a "<i>sink</i>" stage.TODO
+ * </p>
+ * TODO
+ * </li>
+ * </ol>
+ * </br>
  * <p>
  * This pipeline is essentially sequential, as the name "<i>pipeline</i>" suggests
  * with two minor observations around this.
@@ -77,7 +190,7 @@ import com.hazelcast.map.EntryProcessor;
  * </li>
  * </ol>
  * </br>
- * <p><b>IMprovements possible</b>
+ * <p><b>Improvements possible</b>
  * </p>
  * <p>There are many, here are some ideas
  * </p>
