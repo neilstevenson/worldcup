@@ -78,14 +78,21 @@ import com.hazelcast.map.EntryProcessor;
  * </pre>
  * <ol>
  * <li><p>Read Twitter</p>
- * <p>This is a "<i>source</i>" stage.TODO
+ * <p>This is a "<i>source</i>" stage.
  * </p>
  * <p>What this means in streaming terminology is this stage is a source of data. It doesn't receive
  * data from an earlier step in the pipeline, but instead somehow generates output for the next
  * stage in the pipeline.
  * </p>
- * TODO twitter
- * TODO stream stage not batch stage
+ * <p>In this demo we use Twitter's <a href="https://github.com/twitter/hbc">Hosebird</a>, a
+ * Java library to pull tweets by hashtag. This doesn't give tweets at a very fast rate,
+ * but it's fine for a demo. Twitter can give tweets at a faster rate if you use one of
+ * their commercial APIs.
+ * </p>
+ * <p>For real use you would want this step to be parallelised, so that each pipeline
+ * job instance received unique tweets, and this spreads the input load across all
+ * the JVMs.
+ * </p>
  * </li>
  * <li><p>Filter On Charset</p>
  * <p>This is a filtering intermediate stage. Data records come in from the previous stage,
@@ -109,28 +116,59 @@ import com.hazelcast.map.EntryProcessor;
  * and are passed on the next stage as a tuple of two "{@code java.util.String}".
  * So input in one form is mapped to output in another form.
  * </p>
- * TODO key
- * TODO enrichment
+ * <p>In more detail this stage is doing enrichment. The incoming string is
+ * still part of the output, as the second field of a tuple. However a new
+ * string has been added, as the first field of the tuple. This new field
+ * enriches the message with information ; here it is data derived from the
+ * input, but it could equally be reference data. For example if the tweet
+ * has "{@code KSA}" this could be enriched by team loolup to be
+ * "{@oce Saudi Arabia}".
+ * </p>
+ * <p>As the enriched value is the first field of the tuple, it can be
+ * used as a routing key. So, all tweets about the one team can go to
+ * the one processor.
+ * </p>
  * </li>
  * <li><p>Filter On Team Name</p>
- * <p>This is a filtering intermediate stage.TODO
+ * <p>This is a filtering intermediate stage.
  * </p>
- * TODO
+ * <p>Tweets are suppressed if the enrichment hasn't found a team name
+ * in the tweet. This is clearer to do as a separate stage, so that's
+ * what has been done. However, it would be more efficient to build
+ * this into the previous stage.
  * </li>
  * <li><p>Filter On Hashtag</p>
- * <p>This is a filtering intermediate stage.TODO
+ * <p>This is a filtering intermediate stage.
  * </p>
- * TODO
+ * <p>What this is doing is removing tweets that mention teams irrelvant
+ * to the current match. Eg. "The winner of {@code #JAPSEN} will likely
+ * face Belgium in the next round". So the derived team name is Belgium
+ * but the tweet isn't expressing any sentiment about the Japan v
+ * Senegal game.
+ * </p>
  * </li>
  * <li><p>Determine Sentiment</p>
- * <p>This is a mapping intermediate stage.TODO
+ * <p>This is a mapping intermediate stage.
  * </p>
- * TODO
+ * <p>This is where the business logic occurs. The text is analysised
+ * to determine if it is positve, negative or neutral about a team.
+ * The logic is very simplistic, but the business logic is not what
+ * this demo is about.
  * </li>
  * <li><p>Save Results To Hazelcast</p>
- * <p>This is a "<i>sink</i>" stage.TODO
+ * <p>This is a "<i>sink</i>" stage.
  * </p>
- * TODO
+ * <p>
+ * The job here is potentially infinite. The Twitter connection will keep giving
+ * tweets, although the rate will drop between games, so we derive sentimennt as
+ * we go and need to make this visible.
+ * </p>
+ * <p>The method chosen is to use an entry processor to merge results into
+ * a map in Hazelcast IMDG. Assuming the earlier filtering and aggregation
+ * steps reduce the volume of input,
+ * </p>
+ * <p>Once the data is in a map in Hazelcast IMDG, we can use the CLI to
+ * browse the content.
  * </li>
  * </ol>
  * </br>
