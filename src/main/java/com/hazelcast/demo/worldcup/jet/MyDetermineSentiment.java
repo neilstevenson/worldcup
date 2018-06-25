@@ -17,13 +17,15 @@ import com.hazelcast.jet.datamodel.Tuple2;
 public class MyDetermineSentiment {
 	
 	private static final String[] NEGATIVE_WORDS_LOWER_CASE = {
-			"bad", "hopeless", "pathetic", "rubbish"
+			"bad", "hopeless", "pathetic", "rubbish",
+			"mal", "peor" /* Spanish */
 	};
 	private static final String[] NEUTRAL_WORDS_LOWER_CASE= {
 			"draw", "ok"
 	};
 	private static final String[] POSITIVE_WORDS_LOWER_CASE = {
-			"amazing", "good", "great"
+			"amazing", "good", "great",
+			"ganar" /* Spanish */
 	};
 
 	public static Tuple2<String, Sentiment> determineSentiment(Tuple2<String, String> entry, String hashtag) {
