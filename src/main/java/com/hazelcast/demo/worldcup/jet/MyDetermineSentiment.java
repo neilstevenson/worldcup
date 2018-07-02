@@ -11,21 +11,31 @@ import com.hazelcast.jet.datamodel.Tuple2;
  * <u>Very Simplistic!</u>. So the word "<i>good</i>" will result in an upvote.
  * This version isn't bright enough to spot that "<i>good</i>" and "<i>not good</i>"
  * convey different sentiments. It only sees the word "<i>good</i>" and thinks
- * goodt things.
+ * good things.
  * </p> 
  */
 public class MyDetermineSentiment {
 	
 	private static final String[] NEGATIVE_WORDS_LOWER_CASE = {
 			"bad", "hopeless", "pathetic", "rubbish",
-			"mal", "peor" /* Spanish */
+			"rein", "merde", /* French - Switzerland */
+			"scheissen", /* German - Switzerland */
+			"cattivo", /* Italian - Switzerland */
+			"mal", "peor" /* Spanish - Costa Rica */
 	};
 	private static final String[] NEUTRAL_WORDS_LOWER_CASE= {
-			"draw", "ok"
+			"draw", "ok",
+			"indifferent", /* French - Switzerland */
+			"gleichgultig", /* German - Switzerland */
+			"indifferente", /* Italian - Switzerland */
+			"indiferente" /* Spanish - Costa Rica */
 	};
 	private static final String[] POSITIVE_WORDS_LOWER_CASE = {
 			"amazing", "good", "great",
-			"ganar" /* Spanish */
+			"bien", /* French - Switzerland */
+			"fantastiche", /* German - Switzerland */
+			"bene", /* Italian - Switzerland */
+			"ganar" /* Spanish - Costa Rica */
 	};
 
 	public static Tuple2<String, Sentiment> determineSentiment(Tuple2<String, String> entry, String hashtag) {
