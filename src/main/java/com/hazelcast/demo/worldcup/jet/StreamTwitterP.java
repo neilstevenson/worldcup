@@ -15,6 +15,8 @@ import com.twitter.hbc.httpclient.BasicClient;
 import com.twitter.hbc.httpclient.auth.Authentication;
 import com.twitter.hbc.httpclient.auth.OAuth1;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.annotation.Nonnull;
 
 import org.json.JSONObject;
@@ -37,6 +39,7 @@ import static com.hazelcast.jet.core.ProcessorMetaSupplier.preferLocalParallelis
  * a blockoing queue. We output this queue's contents in the {@link #complete} method.
  * </p>
  */
+@Slf4j
 public class StreamTwitterP extends AbstractProcessor {
 
     private final Properties properties;
@@ -130,6 +133,7 @@ public class StreamTwitterP extends AbstractProcessor {
      */
     @Override
     public void close() {
+    	log.info("close(), client=={}", client);
         if (client != null) {
             client.stop();
         }

@@ -50,6 +50,8 @@ public class ApplicationConstants {
 		{ "6th July", "Brazil v Belgium", "#BRABEL" },
 		{ "7th July", "Sweden v England", "#SWEENG" },
 		{ "7th July", "Russia v Croatia", "#RUSCRO" },
+		{ "10th July", "France v Belgium", "#FRABEL" },
+		{ "11th July", "Croatia v England", "#CROENG" },
 	};
 	
 	// "Recommended" country trios hashtags
