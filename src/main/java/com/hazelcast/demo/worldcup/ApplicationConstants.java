@@ -52,6 +52,8 @@ public class ApplicationConstants {
 		{ "7th July", "Russia v Croatia", "#RUSCRO" },
 		{ "10th July", "France v Belgium", "#FRABEL" },
 		{ "11th July", "Croatia v England", "#CROENG" },
+		{ "14th July", "Belgium v England", "#BELENG" },
+		{ "15th July", "France v Croatia", "#FRACRO" },
 	};
 	
 	// "Recommended" country trios hashtags
